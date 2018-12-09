@@ -2,3 +2,4 @@ node_modules/
 src/playground/
 .eslintrc.js
 src/tests/components/__snapshots__
+src/tests/__mocks__

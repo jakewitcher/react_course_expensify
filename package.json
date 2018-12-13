@@ -1,6 +1,9 @@
 {
   "name": "expensify-app",
   "version": "1.0.0",
+  "engines": {
+    "node": "10.8.0"
+  },
   "main": "index.js",
   "repository": "git@github.com:jakewitcher/react_course_indecisionApp.git",
   "author": "Jake Witcher",

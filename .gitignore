@@ -3,7 +3,4 @@ src/playground/
 .eslintrc.js
 src/tests/components/__snapshots__
 src/tests/__mocks__
-public/bundle.js
-public/bundle.js.map
-public/styles.css
-public/styles.css.map
+public/dist

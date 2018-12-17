@@ -9,7 +9,7 @@ export const ExpensesSummary = ({ expensesCount, expensesTotal }) => {
     const isPlural = expensesCount === 1 ? 'expense' : 'expenses';
     return (
         <div>
-            <h1>{`Viewing ${expensesCount} ${isPlural} totaling ${expensesTotal}`}</h1>
+            <h1>{`Viewing ${expensesCount} ${isPlural} totaling ${amount}`}</h1>
         </div>
     );
 };

@@ -5,3 +5,5 @@ src/tests/components/__snapshots__
 src/tests/__mocks__
 public/dist
 yarn-error.log
+.env.development
+.env.test

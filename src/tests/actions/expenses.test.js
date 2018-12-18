@@ -1,6 +1,14 @@
 import configureMockStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import { startAddExpense, startSetExpenses, addExpense, removeExpense, editExpense, setExpenses } from '../../actions/expenses';
+import { 
+    startAddExpense, 
+    startRemoveExpense,
+    startEditExpense,
+    startSetExpenses,
+    addExpense, 
+    removeExpense, 
+    editExpense, 
+    setExpenses } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import database from '../../firebase/firebase';
 
@@ -15,10 +23,27 @@ beforeEach((done) => {
 });
 
 test('should setup remove expense action object', () => {
-    const action = removeExpense({ id: '123abc' });
+    const action = removeExpense('123abc');
     expect(action).toEqual({
         type: 'REMOVE_EXPENSE',
         id: '123abc',
+    });
+});
+
+test('should remove expense from database and store', (done) => {
+    const store = createMockStore({ expenses });
+    const id = 1;
+
+    store.dispatch(startRemoveExpense({ id })).then(() => {
+        const actions = getStoreActions();
+        expect(actions[0]).toEqual({
+            type: 'REMOVE_EXPENSE',
+            id,
+        });
+    });
+    return database.ref(`expenses/${id}`).once('value').then((snapshot) => {
+        expect(snapshot.val()).toEqual(null);
+        done();
     });
 });
 
@@ -29,6 +54,36 @@ test('should setup edit expense action object', () => {
         type: 'EDIT_EXPENSE',
         id: '123abc',
         updates,
+    });
+});
+
+test('should edit expense in database and store', (done) => {
+    const store = createMockStore({ expenses })
+    const id = 1;
+
+    const updates = {
+        description: 'toothpaste',
+        amount: 395,
+    };
+
+    const expense = {
+        description: 'toothpaste',
+        amount: 395,
+        createdAt: 0,
+        note: "",
+    };
+
+    store.dispatch(startEditExpense(id, updates)).then(() => {
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+            type: 'EDIT_EXPENSE',
+            id,
+            updates,
+        });
+    });
+    return database.ref(`expenses/${id}`).once('value').then((snapshot) => {
+        expect(snapshot.val()).toEqual(expense);
+        done();
     });
 });
 

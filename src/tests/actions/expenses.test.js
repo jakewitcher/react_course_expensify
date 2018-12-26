@@ -23,7 +23,7 @@ beforeEach((done) => {
 });
 
 test('should setup remove expense action object', () => {
-    const action = removeExpense('123abc');
+    const action = removeExpense({ id: '123abc' });
     expect(action).toEqual({
         type: 'REMOVE_EXPENSE',
         id: '123abc',
@@ -32,7 +32,7 @@ test('should setup remove expense action object', () => {
 
 test('should remove expense from database and store', (done) => {
     const store = createMockStore({ expenses });
-    const id = 1;
+    const id = expenses[1].id;
 
     store.dispatch(startRemoveExpense({ id })).then(() => {
         const actions = getStoreActions();
@@ -42,7 +42,7 @@ test('should remove expense from database and store', (done) => {
         });
     });
     return database.ref(`expenses/${id}`).once('value').then((snapshot) => {
-        expect(snapshot.val()).toEqual(null);
+        expect(snapshot.val()).toBeFalsy();
         done();
     });
 });
@@ -59,7 +59,7 @@ test('should setup edit expense action object', () => {
 
 test('should edit expense in database and store', (done) => {
     const store = createMockStore({ expenses })
-    const id = 1;
+    const id = expenses[0].id;
 
     const updates = {
         description: 'toothpaste',
